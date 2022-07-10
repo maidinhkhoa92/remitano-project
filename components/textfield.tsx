@@ -1,13 +1,19 @@
-import TextField from "@mui/material/TextField";
-import styled from "styled-components";
+import { TextField, OutlinedTextFieldProps} from "@mui/material";
+import { Controller, Control } from "react-hook-form";
+import React from "react";
 
-const StyledTextField = styled(TextField)`
-  
-`
+interface Props extends OutlinedTextFieldProps {
+  name: string
+  control: Control
+}
 
-const HTextField = (props) => {
+const HTextField: React.FC<Props> = ({ name, control, ...props}) => {
   return (
-    <StyledTextField {...props} />
+    <Controller
+        name={name}
+        control={control}
+        render={({ field }) => <TextField {...props} {...field} />}
+      />
   )
 }
 
