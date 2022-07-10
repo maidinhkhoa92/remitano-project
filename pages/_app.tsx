@@ -1,8 +1,11 @@
 import type { AppProps } from 'next/app'
+import { useEffect, useState } from "react"
 import { createGlobalStyle } from "styled-components"
 import { Snackbar, Alert } from "@mui/material"
 import { Header } from "../components"
+import { onAuthStateChanged } from "firebase/auth";
 import { AppStateProvider, useAppState } from "../provider"
+import { auth } from "../services/api";
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -25,10 +28,33 @@ const Toast = () => {
   )
 }
 
+const AuthState = () => {
+  const { setAuth } = useAppState()
+
+  useEffect(() => {
+    const subscriber = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setAuth({
+          email: user.email,
+          uid: user.uid,
+          accessToken: user.accessToken,
+          refreshToken: user.refreshToken,
+        })
+      } else {
+        setAuth(null)
+      }
+    });
+    return subscriber; // unsubscribe on unmount
+  }, []);
+
+  return <></>
+}
+
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <AppStateProvider>
       <GlobalStyle />
+      <AuthState />
       <Toast />
       <Header />
       <Component {...pageProps} />

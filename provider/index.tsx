@@ -1,5 +1,12 @@
 import React, { useContext, useState, ReactNode } from "react"
 
+type AuthProps = {
+  email: string
+  uid: string
+  accessToken: string
+  refreshToken: string
+}
+
 type AlertProps = {
   type: "success" | "error"
   message: string
@@ -17,6 +24,8 @@ export interface Error {
 }
 
 interface AppStateValue {
+  auth: AuthProps | null
+  setAuth: (auth: AuthProps | null) => void
   alert: AlertProps
   setAlert: (alert: AlertProps) => void
 }
@@ -34,6 +43,7 @@ export function useAppState(): AppStateValue {
 }
 
 export const AppStateProvider = ({ children }: Props) => {
+  const [auth, setAuth] = useState<AuthProps | null>(null)
   const [alert, setAlert] = useState<AlertProps>({
     status: false,
     message: "",
@@ -41,6 +51,8 @@ export const AppStateProvider = ({ children }: Props) => {
   })
 
   const providerValue = {
+    auth,
+    setAuth,
     alert,
     setAlert
   }

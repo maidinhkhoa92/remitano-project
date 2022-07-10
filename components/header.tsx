@@ -11,22 +11,20 @@ import { useAppState } from "../provider";
 
 const Header = () => {
   const { control, handleSubmit } = useForm();
-  const { setAlert } = useAppState()
+  const { setAlert, auth: authState } = useAppState()
   const [loading, setLoading] = useState(false)
+  
 
   const onSubmit = async (data: { email: string; password: string }) => {
     try {
       setLoading(true)
       await authentication(data)
     } catch (error) {
-      console.log(error)
       setAlert({ status: true, message: "Login / Register is failed", type: "error" })
     } finally {
       setLoading(false)
     }
   };
-
-  console.log(3, auth?.currentUser)
 
   return (
     <Container maxWidth="xl">
@@ -51,11 +49,15 @@ const Header = () => {
             Funny Movies
           </Typography>
         </Box>
-        {auth?.email ? (
-          <Box>
-            <Typography>Welcome {auth?.email}</Typography>
-            <Button variant="outlined">Share a movie</Button>
-            <Button variant="outlined" onClick={() => setAuth}>Logout</Button>
+        {authState?.email ? (
+          <Box display="flex" flexDirection="row" alignItems="center">
+            <Typography>Welcome {authState.email}</Typography>
+            <Box ml={1}>
+              <Button variant="outlined">Share a movie</Button>
+            </Box>
+            <Box ml={1}>
+              <Button variant="outlined" onClick={() => auth.signOut()}>Logout</Button>
+            </Box>
           </Box>
         ) : (<form onSubmit={handleSubmit(onSubmit)}>
           <Box display="flex" flexDirection="row">
