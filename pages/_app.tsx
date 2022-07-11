@@ -35,9 +35,8 @@ const AuthState = () => {
     const subscriber = onAuthStateChanged(auth, (user) => {
       if (user) {
         setAuth({
-          email: user.email,
+          email: user?.email || "",
           uid: user.uid,
-          accessToken: user.accessToken,
           refreshToken: user.refreshToken,
         })
       } else {

@@ -6,18 +6,18 @@ import HomeIcon from '@mui/icons-material/Home';
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import TextField from "./textfield";
-import { useForm } from "react-hook-form";
+import { useForm, SubmitHandler } from "react-hook-form";
 import { auth, authentication } from "../services/api";
 import { useAppState } from "../provider";
 import Form from "./video-form";
 
 const Header = () => {
-  const { control, handleSubmit } = useForm();
+  const { control, handleSubmit } = useForm<{ email: string; password: string }>();
   const { setAlert, auth: authState } = useAppState()
   const [loading, setLoading] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
   
-  const onSubmit = async (data: { email: string; password: string }) => {
+  const onSubmit: SubmitHandler<{ email: string; password: string }> = async (data) => {
     try {
       setLoading(true)
       await authentication(data)
@@ -64,10 +64,10 @@ const Header = () => {
         ) : (<form onSubmit={handleSubmit(onSubmit)}>
           <Box display="flex" flexDirection="row">
             <Box mr={1}>
-              <TextField name="email" control={control} size="small" label="Email" variant="outlined" required />
+              <TextField name="email" control={control as any} size="small" label="Email" variant="outlined" required />
             </Box>
             <Box mr={1}>
-              <TextField type="password" name="password" control={control} size="small" label="Password" variant="outlined" required />
+              <TextField type="password" name="password" control={control as any} size="small" label="Password" variant="outlined" required />
             </Box>
             <Button disabled={loading} variant="outlined" type="submit">Login / Register</Button>
           </Box>

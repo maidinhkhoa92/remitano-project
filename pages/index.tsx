@@ -6,13 +6,18 @@ import { db } from "../services/api"
 import { collection, onSnapshot, query } from "firebase/firestore";
 
 const Home: NextPage = () => {
-  const [list, setList] = useState([])
+  const [list, setList] = useState<{
+    id: string
+    title: string
+    description: string
+    email: string
+  }[]>([])
 
   useEffect(() => {
     const unsub = onSnapshot(query(collection(db, "videos")), (snapshot) => {
       console.log(snapshot.docChanges())
       snapshot.docChanges().forEach((change) => {
-        setList((prev) => [change.doc.data(), ...prev])
+        setList((prev) => [change.doc.data() as any, ...prev])
       });
     });
 

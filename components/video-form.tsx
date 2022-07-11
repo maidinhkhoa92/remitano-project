@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Button from "@mui/material/Button";
 import TextField from "./textfield";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { insertVideo } from "../services/api";
 import { useAppState } from "../provider";
 
@@ -20,12 +20,12 @@ const style = {
   pb: 3,
 };
 
-const Form = ({ setIsOpen }) => {
-  const { control, handleSubmit } = useForm();
+const Form: React.FC<{ setIsOpen: React.Dispatch<React.SetStateAction<boolean>> }> = ({ setIsOpen }) => {
+  const { control, handleSubmit } = useForm<{ url: string }>();
   const { setAlert } = useAppState()
   const [loading, setLoading] = useState(false)
 
-  const onSubmit = async (data: { url: string }) => {
+  const onSubmit: SubmitHandler<{ url: string }> = async (data) => {
     try {
       setLoading(true)
       await insertVideo(data.url)
@@ -50,7 +50,7 @@ const Form = ({ setIsOpen }) => {
           </Box>
           <Box flex={1}>
             <Box mb={2}>
-              <TextField fullWidth name="url" control={control} size="small" variant="outlined" required />
+              <TextField fullWidth name="url" control={control as any} size="small" variant="outlined" required />
             </Box>
             <Button variant="outlined" type="submit" fullWidth disabled={loading}>Share</Button>
           </Box>

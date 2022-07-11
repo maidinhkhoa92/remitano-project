@@ -11,12 +11,12 @@ export const authentication = ({ email, password }: { email: string; password: s
   return new Promise((resolve, reject) => {
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        resolve(userCredential._tokenResponse)
+        resolve(userCredential.user)
       })
       .catch((_) => {
         signInWithEmailAndPassword(auth, email, password)
-          .then((userCredential) => {
-            resolve(userCredential._tokenResponse)
+          .then((response) => {
+            resolve(response.user)
           })
           .catch((error) => {
             reject(error.message)
@@ -34,7 +34,7 @@ export const insertVideo = (url: string) => {
     axios.get(`https://www.googleapis.com/youtube/v3/videos?part=id%2C+snippet&id=${id}&key=AIzaSyBlmwODklfiRQCaIvv-dCb2mR55jqapoRY`)
       .then((response) => {
         if (response?.data?.items?.length) {
-          const item = response?.data?.items.find((eq) => eq.id === id)
+          const item = response?.data?.items.find((eq: any) => eq.id === id)
           addDoc(collection(db, "videos"), {
             id: item.id,
             title: item.snippet.title,

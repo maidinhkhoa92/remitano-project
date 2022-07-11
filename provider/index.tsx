@@ -3,7 +3,6 @@ import React, { useContext, useState, ReactNode } from "react"
 type AuthProps = {
   email: string
   uid: string
-  accessToken: string
   refreshToken: string
 }
 
