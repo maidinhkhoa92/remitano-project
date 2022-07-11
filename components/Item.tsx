@@ -5,16 +5,25 @@ import Grid from '@mui/material/Grid';
 import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
 import ThumbDownOutlinedIcon from '@mui/icons-material/ThumbDownOutlined';
 
-const Item = () => {
+interface Props {
+  item: {
+    id: string
+    title: string
+    description: string
+    email: string
+  }
+}
+
+const Item: React.FC<Props> = ({ item }) => {
   return (
     <Grid container>
       <Grid item xs={5}>
-        <iframe width="100%" height="315" src="https://www.youtube.com/embed/g2O95L5E3Y0" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+        <iframe width="100%" height="315" src={`https://www.youtube.com/embed/${item.id}`} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
       </Grid>
       <Grid item xs={7}>
         <Box pl={3} pt={2}>
-          <Typography variant='h4'>Movie Title</Typography>
-          <Typography variant='caption'>Share by: .....@gmail.com</Typography>
+          <Typography variant='h4'>{item.title}</Typography>
+          <Typography variant='caption'>Share by: {item.email}</Typography>
           <Box display="flex" alignItems="center" flexDirection="row">
             <Box display="flex" alignItems="center" flexDirection="row" mr={2}>
               <Typography variant='caption'>89</Typography>
@@ -26,7 +35,7 @@ const Item = () => {
             </Box>
           </Box>
           <Typography variant='caption'>Description:</Typography>
-          <Typography> is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum</Typography>
+          <Typography>{item.description}</Typography>
         </Box>
       </Grid>
     </Grid>

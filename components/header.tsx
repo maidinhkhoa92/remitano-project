@@ -4,17 +4,19 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import HomeIcon from '@mui/icons-material/Home';
 import Button from "@mui/material/Button";
+import Modal from "@mui/material/Modal";
 import TextField from "./textfield";
 import { useForm } from "react-hook-form";
 import { auth, authentication } from "../services/api";
 import { useAppState } from "../provider";
+import Form from "./video-form";
 
 const Header = () => {
   const { control, handleSubmit } = useForm();
   const { setAlert, auth: authState } = useAppState()
   const [loading, setLoading] = useState(false)
+  const [isOpen, setIsOpen] = useState(false)
   
-
   const onSubmit = async (data: { email: string; password: string }) => {
     try {
       setLoading(true)
@@ -53,7 +55,7 @@ const Header = () => {
           <Box display="flex" flexDirection="row" alignItems="center">
             <Typography>Welcome {authState.email}</Typography>
             <Box ml={1}>
-              <Button variant="outlined">Share a movie</Button>
+              <Button variant="outlined" onClick={() => setIsOpen(true)}>Share a movie</Button>
             </Box>
             <Box ml={1}>
               <Button variant="outlined" onClick={() => auth.signOut()}>Logout</Button>
@@ -70,6 +72,15 @@ const Header = () => {
             <Button disabled={loading} variant="outlined" type="submit">Login / Register</Button>
           </Box>
         </form>)}
+
+        <Modal
+          open={isOpen}
+          onClose={() => setIsOpen(false)}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Form setIsOpen={setIsOpen} />
+        </Modal>
       </Box>
     </Container>
   );
