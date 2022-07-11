@@ -30,7 +30,7 @@ const Form: React.FC<{ setIsOpen: React.Dispatch<React.SetStateAction<boolean>> 
       setLoading(true)
       await insertVideo(data.url)
     } catch (error) {
-      setAlert({ status: true, message: "Can't share this video", type: "error" })
+      setAlert({ status: true, message: error instanceof TypeError ? error?.message : "Can't share this video", type: "error" })
     } finally {
       setIsOpen(false)
       setLoading(false)

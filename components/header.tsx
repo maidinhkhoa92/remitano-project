@@ -22,7 +22,7 @@ const Header = () => {
       setLoading(true)
       await authentication(data)
     } catch (error) {
-      setAlert({ status: true, message: "Login / Register is failed", type: "error" })
+      setAlert({ status: true, message: error instanceof TypeError ? error?.message : "Login / Register is failed", type: "error" })
     } finally {
       setLoading(false)
     }
