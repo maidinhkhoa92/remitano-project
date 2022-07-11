@@ -19,7 +19,7 @@ export const authentication = ({ email, password }: { email: string; password: s
             resolve(response.user)
           })
           .catch((error) => {
-            reject(error.message)
+            reject(error)
           });
       });
   })

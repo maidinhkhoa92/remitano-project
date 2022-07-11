@@ -15,7 +15,6 @@ const Home: NextPage = () => {
 
   useEffect(() => {
     const unsub = onSnapshot(query(collection(db, "videos")), (snapshot) => {
-      console.log(snapshot.docChanges())
       snapshot.docChanges().forEach((change) => {
         setList((prev) => [change.doc.data() as any, ...prev])
       });
